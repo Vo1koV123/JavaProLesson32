@@ -26,7 +26,7 @@ private final OrderService orderService;
         return orderService.getOrderById(id);
     }
     @PostMapping
-    public Order addOrder(Order order){
+    public Order addOrder(@RequestBody Order order){
         return orderService.addOrder(order);
     }
 }
