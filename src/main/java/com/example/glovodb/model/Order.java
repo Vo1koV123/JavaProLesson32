@@ -18,9 +18,10 @@ import java.util.List;
 @Table("orders")
 public class Order implements Serializable {
     @Id
-    private Integer id;
+    private int id;
     private String date;
     private double cost;
     List<Product> products;
 
 }
+//

@@ -11,15 +11,18 @@ import java.util.Optional;
 @Data
 @Service
 public class OrderService {
-    private final ProductService productService;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     private final OrderRepository orderRepository;
 
-        public Optional<Order> getOrderById(Integer id){
+        public Optional<Order> getOrderById(int id){
             return orderRepository.findById(id);
         }
-
-        public List<Order> getAllOrder(){
+    //
+        public List<Order> getAllOrders(){
             return orderRepository.findAll();
         }
         public Order addOrder(Order order){

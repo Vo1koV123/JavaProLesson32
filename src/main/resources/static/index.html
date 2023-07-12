@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product and Order Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Функция для получения всех продуктов
+            function getAllProducts() {
+                $.ajax({
+                    url: "/products",
+                    type: "GET",
+                    success: function (data) {
+                        var products = data;
+                        var table = $("#productTable");
+                        table.empty();
+                        for (var i = 0; i < products.length; i++) {
+                            var product = products[i];
+                            var row = "<tr><td>" + product.id + "</td><td>" + product.name + "</td><td>" + product.cost + "</td></tr>";
+                            table.append(row);
+                        }
+                    }
+                });
+            } // Функция для получения продукта по ID
+            function getProductById(id) {
+                $.ajax({
+                    url: "/products/" + id,
+                    type: "GET",
+                    success: function (data) {
+                        var product = data;
+                        $("#productId").text(product.id);
+                        $("#productName").text(product.name);
+                        $("#productCost").text(product.cost);
+                    }
+                });
+            }
+
+            // Функция для добавления нового продукта
+            function addProduct(product) {
+                $.ajax({
+                    url: "/products",
+                    type: "POST",
+                    data: JSON.stringify(product),
+                    contentType: "application/json",
+                    success: function (data) {
+                        var addedProduct = data;
+                        alert("Product added with ID: " + addedProduct.id);
+                    }
+                });
+            }
+
+            // Функция для добавления продукта в заказ
+            function addProductToOrder(product, orderId) {
+                $.ajax({
+                    url: "/products/orders/" + orderId,
+                    type: "POST",
+                    data: JSON.stringify(product),
+                    contentType: "application/json",
+                    success: function (data) {
+                        var addedProduct = data;
+                        alert("Product added to order with ID: " + addedProduct.orderId);
+                    }
+                });
+            }
+
+            // Функция для получения всех заказов
+            function getAllOrders() {
+                $.ajax({
+                    url: "/orders",
+                    type: "GET",
+                    success: function (data) {
+                        var orders = data;
+                        console.log(orders); // Выведите в консоль для проверки
+                        // Дальнейшая обработка полученных данных
+                    }
+                });
+            }
+
+            // Обработчик события для кнопки "Получить все продукты"
+            $("#getAllProductsBtn").click(function () {
+                getAllProducts();
+            });
+
+            // Обработчик события для кнопки "Получить продукт по ID"
+            $("#getProductByIdBtn").click(function () {
+                var productId = $("#productIdInput").val();
+                getProductById(productId);
+            });
+
+            // Обработчик события для кнопки "Добавить продукт"
+            $("#addProductBtn").click(function () {
+                var product = {
+                    id: $("#newProductIdInput").val(),
+                    name: $("#newProductNameInput").val(),
+                    cost: $("#newProductCostInput").val()
+                };
+                addProduct(product);
+            });
+
+            // Обработчик события для кнопки "Добавить продукт в заказ"
+            $("#addProductToOrderBtn").click(function () {
+                var product = {
+                    id: $("#productToOrderIdInput").val(),
+                    name: $("#productNameInput").val(),
+                    cost: $("#productCostInput").val()
+                };
+                var orderId = $("#orderIdInput").val();
+                addProductToOrder(product, orderId);
+            });
+
+            // Обработчик события для кнопки "Получить все заказы"
+            $("#getAllOrdersBtn").click(function () {
+                getAllOrders();
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Product and Order Management</h1>
+<h2>Products</h2>
+<button id="getAllProductsBtn">Get All Products</button>
+<table id="productTable">
+    <!-- Здесь будут отображаться данные продуктов -->
+</table>
+<h2>Get Product By ID</h2>
+<input type="text" id="productIdInput" placeholder="Product ID">
+<button id="getProductByIdBtn">Get Product By ID</button>
+<div>
+    <label>ID: </label>
+    <span id="productId"></span>
+</div>
+<div>
+    <label>Name: </label>
+    <span id="productName"></span>
+</div>
+<div>
+    <label>Cost: </label>
+    <span id="productCost"></span>
+</div>
+<h2>Add New Product</h2>
+<input type="text" id="newProductIdInput" placeholder="New Product ID">
+<input type="text" id="newProductNameInput" placeholder="New Product Name">
+<input type="text" id="newProductCostInput" placeholder="New Product Cost">
+<button id="addProductBtn">Add Product</button>
+<h2>Add Product to Order</h2>
+<input type="text" id="productToOrderIdInput" placeholder="Product ID">
+<input type="text" id="productNameInput" placeholder="Product Name">
+<input type="text" id="productCostInput" placeholder="Product Cost">
+<input type="text" id="orderIdInput" placeholder="Order ID">
+<button id="addProductToOrderBtn">Add Product to Order</button>
+<h2>Orders</h2>
+<button id="getAllOrdersBtn">Get All Orders</button>
+</body>
+</html>
