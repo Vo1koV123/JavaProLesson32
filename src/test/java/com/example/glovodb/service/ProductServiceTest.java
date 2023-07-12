@@ -23,7 +23,7 @@ class ProductServiceTest {
         Product product = Product.builder()
                 .id(1)
                 .name("burger")
-                .cost(69.99)
+                .cost(49.99)
                 .orderid(123)
                 .build();
         Mockito.when(productRepository.save(product)).thenReturn(product);
