@@ -55,8 +55,8 @@ public class OrderServiceTest {
     void getAllOrdersTest() {
         List<Order> orders = List.of(
                 Order.builder().id(1).date("2023-07-12").build(),
-                Order.builder().id(2).date("2023-07-13").build(),
-                Order.builder().id(3).date("2023-07-14").build()
+                Order.builder().id(2).date("2023-07-12").build(),
+                Order.builder().id(3).date("2023-07-12").build()
         );
         Mockito.when(orderRepository.findAll()).thenReturn(orders);
         List<Order> all = orderService.getAllOrders();
